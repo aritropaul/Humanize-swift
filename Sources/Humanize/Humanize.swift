@@ -1,6 +1,12 @@
-public struct Humanize {
-    public private(set) var text = "Hello, World!"
 
-    public init() {
-    }
+import Foundation
+
+public enum Suffix {
+    case decimal
+    case binary
+}
+
+
+public class Humanize {
+    
 }
