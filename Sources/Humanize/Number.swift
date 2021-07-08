@@ -110,4 +110,73 @@ extension Humanize {
         }
     }
     
+    
+    func scientific(_ value: Double) -> String {
+        let exponents = [
+            "0": "⁰",
+            "1": "¹",
+            "2": "²",
+            "3": "³",
+            "4": "⁴",
+            "5": "⁵",
+            "6": "⁶",
+            "7": "⁷",
+            "8": "⁸",
+            "9": "⁹",
+            "+": "⁺",
+            "-": "⁻",
+        ]
+        var negative = false
+        var absValue = value
+        if "\(value)".contains("-") {
+            absValue = abs(value)
+            negative = true
+        }
+        
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .scientific
+        formatter.maximumFractionDigits = 2
+        let stringValue = formatter.string(from: NSNumber(floatLiteral: absValue)) ?? ""
+        
+        let parts = stringValue.components(separatedBy: "E")
+        var part1 = parts[0]
+        var part2 = parts[1]
+        
+        if part2.contains("-0") {
+            part2 = part2.replacingOccurrences(of: "-0", with: "0")
+        }
+        if part2.contains("0") && part2.count == 1 {
+            part2 = part2.replacingOccurrences(of: "0", with: "")
+        }
+        var newPart2 = ""
+        if negative {
+            part1 = "-" + part1
+        }
+        for char in part2 {
+            newPart2 += exponents[String(char)]!
+        }
+        
+        let finalString = part1 + " × 10" + newPart2
+        return finalString
+    }
+    
+    func clamp(_ value: Double, floor: Double? = nil, ceil: Double? = nil) -> String {
+        var token = ""
+        var mutValue = value
+        if floor != nil {
+            if value < (floor!) {
+                mutValue = floor!
+                token = "<"
+            }
+        }
+        else if ceil != nil {
+            if value > (ceil!) {
+                mutValue = ceil!
+                token = ">"
+            }
+        }
+        else { token = "" }
+        return token + "\(mutValue)"
+    }
+    
 }

@@ -11,5 +11,7 @@ final class HumanizeTests: XCTestCase {
         print(Humanize().comma(2858493.49))
         print(Humanize().word(3456782984))
         print(Humanize().fraction(0.4456))
+        print(Humanize().scientific(0.000000385384))
+        print(Humanize().clamp(123.456, ceil: 120))
     }
 }
